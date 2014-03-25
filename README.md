@@ -1,7 +1,7 @@
 week6day2
 =========
 
-Ashley Lee
+Paired with Ashley Lee
 
 Point of sale
 Make a point of sale (POS) system for a convenience store. A POS is a system that lets cashiers ring up customers for their purchases.
