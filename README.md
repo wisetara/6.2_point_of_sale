@@ -1,4 +1,4 @@
-#Point of sale
+Point of sale
 ##Make a point of sale (POS) system for a convenience store. A POS is a system that lets cashiers ring up customers for their purchases.
 
 -As a store manager, I want to add a new product to the POS, with its name and price, so that I can keep track of what we're selling.
