@@ -1,6 +1,7 @@
 require 'active_record'
 require './lib/product.rb'
 require './lib/cashier.rb'
+require './lib/purchase.rb'
 
 database_configurations = YAML::load(File.open('./db/config.yml'))
 development_configuration = database_configurations['development']
@@ -33,7 +34,6 @@ end
 
 def manager_menu
   puts "\n\n"
-  #puts "To Add a New Product to the POS: 'A'"
   puts "To Access the Products menu, press 'P'"
   puts "To Access to Employee Database, press 'D'"
   puts "To Return to the Main Menu, press 'M'"
@@ -114,14 +114,14 @@ def add_employee
   name = gets.chomp.titlecase
   puts "Enter the Unique Employee Login Number"
   login = gets.chomp.to_i
-  Cashiers.create({name: name, login: login})
+  Cashier.create({name: name, login: login})
   puts "You Have Entered #{name}, LOGIN: #{login} into the POS"
   manager_menu
 end
 
 def view_employees
   puts "\n\n"
-  Cashiers.all.each {|cashier| puts "#{cashier.name}"}
+  Cashier.all.each {|cashier| puts "#{cashier.name}"}
   puts "\n\n"
   employee_database
 end
@@ -129,10 +129,10 @@ end
 def edit_employee
   puts "\n\nWelcome to the Employee Menu"
   puts "Your minions are as follows:"
-  Cashiers.all.each {|cashier| puts "#{cashier.name}"}
+  Cashier.all.each {|cashier| puts "#{cashier.name}"}
   puts "To Release an Employee from your Tyrannous Reign, Enter Their Name:"
   employee_to_delete = gets.chomp.titlecase
-  locate_employee = Cashiers.where({name: employee_to_delete}).first
+  locate_employee = Cashier.where({name: employee_to_delete}).first
   locate_employee.destroy
   puts "'#{employee_to_delete}' has been released with severance pay\n\n"
   puts "To return to Manager Menu press 'M' otherwise hit any key to return to Main Menu.\n\n"
@@ -140,6 +140,58 @@ def edit_employee
     case user_input
     when 'm' then manager_menu
     else main_menu
+    end
+end
+
+def employee_menu
+  puts "To Ring Up a Purchase press 'P'"
+  puts "To Return a Product press 'R'"
+  puts "To Return to the Main Menu press 'M'"
+  user_choice = gets.chomp.downcase
+    case user_choice
+    when 'p' then
+      Purchase
+    end
+
+      def add_purchases
+      puts "Enter your Cashier LogIn Number"
+      cashier_login = gets.chomp.to_i
+      current_cashier = Cashier.find_by({ :login => cashier_login })
+      puts "You're a Great Cashier!\n\n\n"
+
+
+      puts "These are the products available for sale:"
+      Product.all.each_with_index {|product, index| puts "#{index+1}." "#{product.name}: $#{sprintf '%.2f', product.price}"}
+      puts "Enter the index of the product you want to add to the purchase"
+      user_input = gets.chomp
+
+      current_cashier.purchases.create(product_id: user_input)
+
+
+      cashier_login 9998
+      cashier_id = Cashier.find_by(:id)#Cashiers.where({login: cashier_login}).first.id
+
+
+      this_product = Product.create()
+
+      Purchase.new({:product_id => this_product.id, :cashier_id=> current_cashier.id})
+
+
+      Purchase.create({cashier_id: cashier_id})
+
+
+      puts "\n\nWhich product would you like to add to the purchase?"
+      product_choice = gets.chomp.titlecase
+      selected_product = Purchase.where({name: product_choice}).first
+      puts "#{product.name} $#{sprintf '%.2f', product.price}"}
+      transaction_array = []
+      transaction_array << selected_product
+end
+
+
+
+    else
+      main_menu
     end
 end
 
