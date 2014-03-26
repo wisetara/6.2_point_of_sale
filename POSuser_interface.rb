@@ -168,13 +168,15 @@ def employee_menu
       current_cashier.purchases.create(product_id: user_input)
 
 
+
+
       cashier_login 9998
       cashier_id = Cashier.find_by(:id)#Cashiers.where({login: cashier_login}).first.id
 
 
       this_product = Product.create()
 
-      Purchase.new({:product_id => this_product.id, :cashier_id=> current_cashier.id})
+      Purchase.new({product_id: this_product.id, cashier_id: current_cashier.id})
 
 
       Purchase.create({cashier_id: cashier_id})
